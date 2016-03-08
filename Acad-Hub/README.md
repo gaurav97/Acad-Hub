@@ -1,4 +1,3 @@
-# libproject
 
 do
 
