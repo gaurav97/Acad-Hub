@@ -3,25 +3,22 @@ from bs4 import BeautifulSoup
 from webcrawler import showBooks
 
 
-#functions to remove spaces as desired
 def sortfunc(a):
 	return int(a[1])
-def stripAll(text):
-	strippedText = ''.join(text.split())
-	return strippedText
+
 
 def splitAndJoin(text):
+	"""Function that returns a string formed after replacing all the white spaces of the given input string(text) with a single space
+	"""
 	return " ".join(text.split()).rstrip().lstrip()
 
-def removeSpaces(text):
-	return "".join(text.split()).rstrip().lstrip()
 
-#function to get date from the first column
+
 def getDate(rows,j):
 	ans=rows[j].find('td')			#getting text of the first column of the row
 	b=splitAndJoin(ans.text)
 	a=b.split()						#splitting text by spaces
-	return a[1:6]						#returning 5th index of the array
+	return a[1:4]						#returning 5th index of the array
 
 #function to find date
 def findDate(rows,i):
@@ -73,7 +70,7 @@ def examtt(courses):
 		for j in range(len(date[i])):
 			item.append(date[i][j])
 		item.append(rooms[i])	 #making a item of each course
-		listarr.append(item)					#appending it to the list array
+		listarr.append(item)			#appending it to the list array
 	return sorted(listarr	, key=sortfunc)
 
 
@@ -93,8 +90,13 @@ def listTT(dept,sem):
 	coursecodes=list(set(coursecodes))
 
 
-	# print coursecodes
-	return examtt(coursecodes)	
+	tt=examtt(coursecodes)
+	for i in range(len(tt)):
+		code=tt[i][0][0:2]+tt[i][0][3:]
+		for j in range(len(courses)):
+			if code in courses[j][0]:
+				tt[i].insert(1,courses[j][1])
+	return tt				
 
 
 # print listTT("CSE",4)
